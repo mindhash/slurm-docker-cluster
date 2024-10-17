@@ -51,7 +51,7 @@ services:
       - slurm-network
 
   c1:
-    image: slurm-docker-cluster:${IMAGE_TAG}
+    image: nccl_base:latest
     command: ["slurmd"]
     hostname: c1
     container_name: c1
@@ -67,22 +67,22 @@ services:
     networks:
       - slurm-network
 
-  c2:
-    image: slurm-docker-cluster:${IMAGE_TAG}
-    command: ["slurmd"]
-    hostname: c2
-    container_name: c2
-    volumes:
-      - etc_munge:/etc/munge
-      - etc_slurm:/etc/slurm
-      - slurm_jobdir:/data
-      - var_log_slurm:/var/log/slurm
-    expose:
-      - "6818"
-    depends_on:
-      - "slurmctld"
-    networks:
-      - slurm-network
+  # c2:
+  #   image: slurm-docker-cluster:${IMAGE_TAG}
+  #   command: ["slurmd"]
+  #   hostname: c2
+  #   container_name: c2
+  #   volumes:
+  #     - etc_munge:/etc/munge
+  #     - etc_slurm:/etc/slurm
+  #     - slurm_jobdir:/data
+  #     - var_log_slurm:/var/log/slurm
+  #   expose:
+  #     - "6818"
+  #   depends_on:
+  #     - "slurmctld"
+  #   networks:
+  #     - slurm-network
 
 volumes:
   etc_munge:
