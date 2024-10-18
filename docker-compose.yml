@@ -14,7 +14,7 @@ services:
       - slurm-network
 
   slurmdbd:
-    image: slurm-docker-cluster:${IMAGE_TAG}
+    image: nccl_compose:latest
     build:
       context: .
       args:
@@ -34,7 +34,7 @@ services:
       - slurm-network
 
   slurmctld:
-    image: slurm-docker-cluster:${IMAGE_TAG}
+    image: nccl_compose:latest
     command: ["slurmctld"]
     container_name: slurmctld
     hostname: slurmctld
@@ -51,7 +51,7 @@ services:
       - slurm-network
 
   c1:
-    image: nccl_base:latest
+    image: nccl_compose:latest
     command: ["slurmd"]
     hostname: c1
     container_name: c1

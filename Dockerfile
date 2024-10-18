@@ -40,6 +40,7 @@ RUN mkdir -p /etc/sysconfig/slurm \
         /var/log/slurm \
         /data \
         /etc/slurm \
+        /run/munge/ \
     && touch /var/lib/slurmd/node_state \
         /var/lib/slurmd/front_end_state \
         /var/lib/slurmd/job_state \
@@ -50,11 +51,11 @@ RUN mkdir -p /etc/sysconfig/slurm \
         /var/lib/slurmd/qos_usage \
         /var/lib/slurmd/fed_mgr_state  \
     && groupadd -r --gid=990 slurm \
-    && useradd -r -g slurm --uid=990 slurm \    
-    && chown -R slurm:slurm /var/*/slurm* \
-    && /sbin/create-munge-key \
-    && useradd -u 1000 rocky \
-    && usermod -p '*'  rocky # unlocks account but sets no password
+    && useradd -r -g slurm --uid=990 slurm \
+    && chown -R slurm:slurm /var/*/slurm* 
+#     && /sbin/create-munge-key \
+#    && useradd -u 1000 rocky \
+#    && usermod -p '*'  rocky # unlocks account but sets no password
 
 COPY slurm.conf /etc/slurm/slurm.conf
 COPY slurmdbd.conf /etc/slurm/slurmdbd.conf
@@ -65,6 +66,9 @@ RUN set -x \
 # VOLUME /etc/slurm
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod 774 /usr/local/bin/docker-entrypoint.sh
+
+# && chown -R munge: /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/ && chmod 0700 /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
+RUN rm -rf /etc/munge/munge.key
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
